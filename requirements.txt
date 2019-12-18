@@ -1,0 +1,9 @@
+mock==3.0.5
+pytest==5.2.2
+pytest-cov==2.8.1
+requests==2.22.0
+flake8==3.7.8
+pylint==2.4.3
+pymongo[tls,srv]==3.6.1
+freezegun==0.3.12
+python-telegram-bot==12.2.0

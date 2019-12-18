@@ -22,3 +22,18 @@
 -  every function has to have at least one test
 - all the descriprions must be in English, exception is only for text labels
 
+## Logging rules
+- there are 3 levels of logs in the project: DEBUG, INFO, ERROR
+- root logger configured in set_logger() func in main.py
+- every other file inherits logging settings from the `main.py`
+- to add logging to a file simply add  
+    ```python
+    import logging
+    LOG = logging.getLogger(__name__)
+    ```
+- then use it as usual:  
+    ```python
+    LOG.info("some information to log")
+    ```
+- logging cookbook: https://docs.python.org/3/howto/logging-cookbook.html#logging-cookbook
+

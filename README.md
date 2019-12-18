@@ -37,3 +37,13 @@
     ```
 - logging cookbook: https://docs.python.org/3/howto/logging-cookbook.html#logging-cookbook
 
+## How to run tests
+- activate virtual environment  
+    ```bash
+    source .venv/bin/activate
+    ```
+- run tests  
+    ```
+    make test
+    ```
+

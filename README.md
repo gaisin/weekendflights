@@ -12,3 +12,8 @@
     source private.sh
     ```
 
+## Updating (TODO)
+- master branch is untouchable without pull request
+- before I can merge pull request to master, all tests should be passed
+- after I update master, I can pull changes to the prod
+

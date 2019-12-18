@@ -17,3 +17,8 @@
 - before I can merge pull request to master, all tests should be passed
 - after I update master, I can pull changes to the prod
 
+## Developer's rules
+- every function has to have a docstring
+-  every function has to have at least one test
+- all the descriprions must be in English, exception is only for text labels
+

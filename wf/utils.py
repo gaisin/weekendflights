@@ -4,6 +4,10 @@
 import logging
 import logging.handlers
 
+from datetime import date, timedelta, datetime
+from calendar import nextmonth, month_name
+
+
 LOG = logging.getLogger(__name__)
 
 def set_logger():
@@ -36,3 +40,24 @@ def set_logger():
     logger.addHandler(ch)
 
     return logger
+
+
+def get_next_months(months_number):
+    """Returns dictionary of next X months from today (including current month)
+    in {'name': 'first date'} format, e.g.
+    months = {
+        'november': '2019-11-01',
+        'december': '2019-12-01',
+    }
+    """
+    months = {}
+
+    date_to_write = date.today().replace(day=1)
+
+    for i in range(months_number):
+        name = month_name[date_to_write.month]
+        months[name] = str(date_to_write)
+        next_year, next_month = nextmonth(date_to_write.year, date_to_write.month)
+        date_to_write = date_to_write.replace(year=next_year, month=next_month)
+
+    return months

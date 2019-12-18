@@ -47,3 +47,16 @@
     make test
     ```
 
+## How to run linters
+- flake8 - uses .flake8 configuration file
+    ```
+    flake8 wf
+    ```
+- pylint - uses .pylintrc configuration file
+    ```
+    pylint wf
+    ```
+- bandit - uses .bandit configuration file
+    ```
+    bandir -r .
+    ```

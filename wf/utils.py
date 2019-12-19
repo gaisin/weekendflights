@@ -86,3 +86,11 @@ def get_months_from_dates(departure_date, arrival_date):
 
     return months
 
+def get_weekday(date_string):
+    """Returns weekday of given date.
+    Date should be in YYYY-MM-DD format.
+    """
+    date_elems = [int(i) for i in date_string.split('-')]
+    date_in_datetime = datetime(*date_elems)
+    weekday_num = date_in_datetime.weekday()
+    return WEEKDAYS[weekday_num]

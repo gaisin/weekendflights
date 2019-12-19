@@ -17,3 +17,15 @@ def test_get_next_months():
     }
     assert wf.utils.get_next_months(3) == expected_result
 
+
+def test_get_months_from_dates():
+    """Tests get_months_from_dates() funciton."""
+
+    result = wf.utils.get_months_from_dates('2020-04-23', '2020-05-11')
+
+    expected_result = {
+        'April': '2020-04-01',
+        'May': '2020-05-01',
+    }
+
+    assert expected_result == result

@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Various tools for the project."""
+"""Various tools for the project.
+
+TODO:
+    * add make_weekend_tuples to make tuples with weekend dates pairs
+    * add tools to convert cities and countries names
+"""
 
 import logging
 import logging.handlers

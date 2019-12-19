@@ -1,5 +1,7 @@
 # Weekend flights
 
+test github actions
+
 ## Installing and running
 1. Create a virtual environment and activate it
 2. Install requirements

@@ -25,6 +25,19 @@ def test_get_weekday():
     assert weekday == 'Sunday'
 
 
+def test_create_aviasales_link():
+    """Tests create_aviasales_link() function."""
+
+    link = wf.utils.create_aviasales_link(
+        'MOW', '2019-11-10',
+        'UFA', '2019-11-12',
+    )
+
+    expected_link = 'https://www.aviasales.ru/search/MOW1011UFA12111?marker=207849'
+
+    assert link == expected_link
+
+
 def test_get_months_from_dates():
     """Tests get_months_from_dates() funciton."""
 

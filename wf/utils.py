@@ -86,6 +86,26 @@ def get_months_from_dates(departure_date, arrival_date):
 
     return months
 
+def get_next_wednesday(from_date=None):
+    """Return next Wednesday from today or from given date.
+    If given date is Wednesday, returns given date.
+    """
+    if from_date is None:
+        today = date.today()
+    else:
+        today = date(*[int(elem) for elem in from_date.split('-')])
+
+    day = today.weekday()
+    if day < 2:
+        diff = timedelta(days=(2 - day))
+    elif day > 2:
+        diff = timedelta(days=(7 - day + 2))
+    else:
+        diff = timedelta(days=0)
+
+    return today + diff
+
+
 def create_aviasales_link(origin, departure_date, destination, arrival_date):
     """"Creates link to aviasales flights serach on given params,
     and adds travelpayouts marker.

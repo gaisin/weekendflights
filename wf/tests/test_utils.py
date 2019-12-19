@@ -18,6 +18,13 @@ def test_get_next_months():
     assert wf.utils.get_next_months(3) == expected_result
 
 
+def test_get_weekday():
+    """Tests get_weekday() function."""
+
+    weekday = wf.utils.get_weekday('2019-11-10')
+    assert weekday == 'Sunday'
+
+
 def test_get_months_from_dates():
     """Tests get_months_from_dates() funciton."""
 

@@ -10,6 +10,17 @@ from calendar import nextmonth, month_name
 
 LOG = logging.getLogger(__name__)
 
+WEEKDAYS = {
+    0: "Monday",
+    1: "Tuesday",
+    2: "Wednesday",
+    3: "Thirsday",
+    4: "Friday",
+    5: "Saturday",
+    6: "Sunday"
+}
+
+
 def set_logger():
     """Sets logging configuration."""
 

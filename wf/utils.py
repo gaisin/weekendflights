@@ -61,3 +61,28 @@ def get_next_months(months_number):
         date_to_write = date_to_write.replace(year=next_year, month=next_month)
 
     return months
+
+
+def get_months_from_dates(departure_date, arrival_date):
+    """Returns dictionary of months between departure_date and arrival_date
+    in {'name': 'first date'} format, e.g. 2020-04-23 and 2020-05-11:
+    months = {
+        'april': '2020-04-01',
+        'may': '2020-05-01',
+    }
+    """
+    months = {}
+
+    departure_month_num = int(departure_date.split('-')[1])
+    arrival_month_num = int(arrival_date.split('-')[1])
+
+    date_to_write = date(*(int(i) for i in departure_date.split('-'))).replace(day=1)
+
+    for month_num in range(departure_month_num, arrival_month_num+1):
+        name = month_name[month_num]
+        months[name] = str(date_to_write)
+        next_year, next_month = nextmonth(date_to_write.year, date_to_write.month)
+        date_to_write = date_to_write.replace(year=next_year, month=next_month)
+
+    return months
+

@@ -86,6 +86,25 @@ def get_months_from_dates(departure_date, arrival_date):
 
     return months
 
+def create_aviasales_link(origin, departure_date, destination, arrival_date):
+    """"Creates link to aviasales flights serach on given params,
+    and adds travelpayouts marker.
+
+    Since the aviasales search available only for next 12 months,
+    it is possible just to send depart and arrival dates' month and day.
+    """
+    departure_date_formatted = ''.join(reversed(departure_date[5:].split('-')))
+    arrival_date_formatted = ''.join(reversed(arrival_date[5:].split('-')))
+
+    link = 'https://www.aviasales.ru/search/{}{}{}{}1?marker=207849'.format(
+        origin,
+        departure_date_formatted,
+        destination,
+        arrival_date_formatted,
+    )
+    return link
+
+
 def get_weekday(date_string):
     """Returns weekday of given date.
     Date should be in YYYY-MM-DD format.

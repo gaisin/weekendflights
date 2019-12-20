@@ -102,6 +102,7 @@ def get_months_from_dates(departure_date, arrival_date):
 
     return months
 
+
 def get_next_wednesday(from_date=None):
     """Return next Wednesday from today or from given date.
     If given date is Wednesday, returns given date.

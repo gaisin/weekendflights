@@ -63,6 +63,12 @@ class Collection():
         return f"Collection({self.__name})"
 
 
+def initiate_db():
+    """Initiates database."""
+
+    create_indexes()
+
+
 def create_indexes():
     """Sets indexes and unique keys."""
 

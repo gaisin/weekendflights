@@ -62,3 +62,28 @@ class Collection():
     def __repr__(self):
         return f"Collection({self.__name})"
 
+
+def create_indexes():
+    """Sets indexes and unique keys."""
+
+    db = Database("wf")
+
+    # flights collection index
+    db.flights.create_index([
+        ("destination", 1),
+        ("price", 1),
+        ("departure_date", 1),
+        ("arrival_date", 1),
+    ], unique=True)
+
+    # searches collection index
+    db.searches.create_index(
+        [("name", 1)],
+        unique=True
+    )
+
+    # flights collection TTL index to delete documents after 30 days
+    month_in_seconds = 2630000
+    db.flights.create_index([
+        ("added_at", 1),
+    ], expireAfterSeconds=month_in_seconds)

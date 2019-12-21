@@ -44,3 +44,21 @@ class Database():
 
         return client
 
+
+class Collection():
+    """Wrapper over mongo collection.
+
+    Now just proxies calls to mongo collection,
+    but any logic can be build in the future.
+    """
+
+    def __init__(self, name, collection):
+        self.__name = name
+        self.__collection = collection
+
+    def __getattr__(self, name):
+        return getattr(self.__collection, name)
+
+    def __repr__(self):
+        return f"Collection({self.__name})"
+

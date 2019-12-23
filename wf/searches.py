@@ -105,3 +105,9 @@ def remove(name):
     searches_collection = get_collection()
     searches_collection.delete_one({"name": name})
 
+
+def get_all():
+    """Returns list of all searches, where each search is a dict."""
+
+    searches_collection = get_collection()
+    return list(searches_collection.find())

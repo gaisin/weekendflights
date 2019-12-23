@@ -97,3 +97,11 @@ def add(name, destinations, max_price, trip_type, next_x_months=None, departure_
     searches_collection.insert_one(search)
 
 
+def remove(name):
+    """Removes a search from a database."""
+
+    LOG.info(f'Removing a "{name}" search from the database...')
+
+    searches_collection = get_collection()
+    searches_collection.delete_one({"name": name})
+

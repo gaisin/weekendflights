@@ -56,3 +56,44 @@ def get_collection():
 
     db = wf.db.Database("wf")
     return db.searches
+
+
+def add(name, destinations, max_price, trip_type, next_x_months=None, departure_date=None,
+        arrival_date=None, trip_min_length=None, trip_max_length=None):
+    """Adds a search into a database."""
+
+    LOG.info(f'Adding a "{name}" search to the database...')
+
+    if trip_type == "weekends" and next_x_months is None:
+        raise Exception("If trip_type == 'weekends', "
+                        "'next_x_months' attribute should be specified.")
+
+    elif trip_type == "vacation":
+        if departure_date is None or arrival_date is None:
+            raise Exception("If trip_type == vacation, "
+                            "departure and arrival dates should be specified.")
+        if trip_min_length is None or trip_max_length is None:
+            raise Exception("If trip_type == vacation, "
+                            "trip_min_length and trip_max_length "
+                            "should be specified.")
+
+    search = {
+        "name": name,
+        "destinations": destinations,
+        "max_price": max_price,
+        "trip_type": trip_type,
+    }
+
+    if trip_type == "weekends":
+        search["next_x_months"] = next_x_months
+
+    if trip_type == "vacation":
+        search["departure_date"] = departure_date
+        search["arrival_date"] = arrival_date
+        search["trip_min_length"] = trip_min_length
+        search["trip_max_length"] = trip_max_length
+
+    searches_collection = get_collection()
+    searches_collection.insert_one(search)
+
+

@@ -20,4 +20,6 @@ jobs:
     - name: Install self modules
       run: pip install -e .
     - name: Test with pytest
+      env:
+        IFTTT_KEY: ${{ secrets.IFTTT_KEY }}
       run: pytest -vvvv --cov=./wf

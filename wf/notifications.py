@@ -6,7 +6,11 @@ import os
 import requests
 import smtplib
 
+import telegram
+
 from email.message import EmailMessage
+
+WF_BOT_TOKEN = os.environ['WF_BOT_TOKEN']
 
 MAIL_SERVER = os.environ['MAIL_SERVER']
 MAIL_LOGIN = os.environ['MAIL_LOGIN']
@@ -17,6 +21,15 @@ VK_TOKEN = os.environ['VK_TOKEN']
 VK_OWNER_ID_GROUP = os.environ['VK_OWNER_ID_GROUP']
 
 LOG = logging.getLogger(__name__)
+
+
+def post_to_channel(flights, search_name):
+    """Posts found flight to telegram channel.
+    TODO: finish the function
+    """
+
+    bot = telegram.Bot(token=WF_BOT_TOKEN)
+    bot.send_message(chat_id='@weekendflights', text='some text to post')
 
 
 def send_failure_email(traceback_info):

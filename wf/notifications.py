@@ -10,6 +10,7 @@ import telegram
 
 from email.message import EmailMessage
 
+IFTTT_KEY = os.environ['IFTTT_KEY']
 WF_BOT_TOKEN = os.environ['WF_BOT_TOKEN']
 
 MAIL_SERVER = os.environ['MAIL_SERVER']
@@ -21,6 +22,24 @@ VK_TOKEN = os.environ['VK_TOKEN']
 VK_OWNER_ID_GROUP = os.environ['VK_OWNER_ID_GROUP']
 
 LOG = logging.getLogger(__name__)
+
+
+def send_found_len_by_ifttt(found_flights_number, search_name):
+    """Sends notification about number of found tickets for specific search."""
+
+    if not found_flights_number:
+        return
+
+    LOG.info(f'Sending push notification that {found_flights_number} '
+             f'flights found for "{search_name}" search...')
+
+    notification = f'Found {found_flights_number} new flights for "{search_name}" search'
+
+    ifttt_event_url = f'https://maker.ifttt.com/trigger/ticket_found/with/key/{IFTTT_KEY}'
+    data_to_send = {'value1': notification}
+
+    # Sending post request to IFTTT webhook url
+    requests.post(ifttt_event_url, json=data_to_send)
 
 
 def post_to_channel(flights, search_name):

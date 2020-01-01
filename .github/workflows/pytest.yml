@@ -22,4 +22,11 @@ jobs:
     - name: Test with pytest
       env:
         IFTTT_KEY: ${{ secrets.IFTTT_KEY }}
+        WF_BOT_TOKEN: ${{ secrets.WF_BOT_TOKEN }}
+        MAIL_SERVER: ${{ secrets.MAIL_SERVER }}
+        MAIL_LOGIN: ${{ secrets.MAIL_LOGIN }}
+        MAIL_PASS: ${{ secrets.MAIL_PASS }}
+        OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        VK_TOKEN: ${{ secrets.VK_TOKEN }}
+        VK_OWNER_ID_GROUP: ${{ secrets.VK_OWNER_ID_GROUP }}
       run: pytest -vvvv --cov=./wf

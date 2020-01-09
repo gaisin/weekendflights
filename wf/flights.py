@@ -196,3 +196,13 @@ def add(destination, price, departure_date, arrival_date):
     flights_collection.insert_one(flight)
 
 
+def get_all(filter_query=None):
+    """Returns list of all flights, where each flight is a dict."""
+
+    if filter_query is None:
+        filter_query = {}
+
+    flights_collection = get_collection()
+    return list(flights_collection.find(filter_query))
+
+

@@ -68,3 +68,45 @@ def get_latest(destination_codes, months):
 
     LOG.info(f"\tfound {len(found_flights)} latest flights")
     return found_flights
+
+
+def filter_flights(flights_data, date_pairs, max_price,
+                   max_hours_passed=6, unwilling_destinations=None):
+    """Filter given flights list according to settings.
+    For each flights in flights_data
+
+    :flights_data: list of flights, each flights is a dictionary
+    :date_pairs: list of tuples, where each tuple is a pair of suitable dates
+    :max_price: maximum price of a flight
+    :max_hours_passed: maximum hours passed since flight finding
+    :unwilling_destinations: list of IATA codes of not suitable destinations,
+        needed if search made for whole country, but some of destinations are not suitable
+    """
+    LOG.debug("Filtering flights...")
+    LOG.debug(f"\tgot {len(flights_data)} flights and {len(date_pairs)} date pairs")
+    LOG.debug(f"\tmax price is {max_price}, max hours passed is {max_hours_passed}")
+    LOG.debug(f"\tunwillings destinations are {unwilling_destinations}")
+    unwilling_destinations = unwilling_destinations or []
+
+    filtered_flights = []
+
+    for flight in flights_data:
+        found_at = flight['found_at']
+        try:
+            found_at_datetime = datetime.strptime(found_at, '%Y-%m-%dT%H:%M:%S')
+        except ValueError:
+            found_at_datetime = datetime.strptime(found_at, '%Y-%m-%dT%H:%M:%S.%f')
+
+        time_now = datetime.now()
+        time_difference = time_now - found_at_datetime
+        time_difference_in_hours = time_difference / timedelta(hours=1)
+        if time_difference_in_hours > max_hours_passed:
+            continue
+
+        if (flight['value'] <= max_price and
+           flight['destination'] not in unwilling_destinations and
+           (flight["depart_date"], flight["return_date"]) in date_pairs):
+            filtered_flights.append(flight)
+
+    LOG.debug(f"\t{len(filtered_flights)} left after filtering")
+    return filtered_flights

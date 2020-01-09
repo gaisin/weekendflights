@@ -206,3 +206,26 @@ def get_all(filter_query=None):
     return list(flights_collection.find(filter_query))
 
 
+def get_unique_flights(flights_data):
+    """Return only those flights, that are not in the flights database yet."""
+
+    LOG.info("Getting unique flights...")
+    LOG.info(f"\tGot {len(flights_data)} flights")
+
+    unique_flights = []
+
+    for flight in flights_data:
+        try:
+            add(
+                flight["destination"],
+                flight["price"],
+                flight["departure_date"],
+                flight["arrival_date"],
+            )
+        except DuplicateKeyError:
+            pass
+        else:
+            unique_flights.append(flight)
+
+    LOG.info(f"\t{len(unique_flights)} of them are unique")
+    return unique_flights

@@ -32,4 +32,5 @@ jobs:
         DB_LOGIN: ${{ secrets.DB_LOGIN }}
         DB_PASS: ${{ secrets.DB_PASS }}
         DB_ADDRESS: ${{ secrets.DB_ADDRESS }}
+        TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
       run: pytest -vvvv --cov=./wf

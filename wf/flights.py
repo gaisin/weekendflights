@@ -181,3 +181,18 @@ def get_collection():
     return db.flights
 
 
+def add(destination, price, departure_date, arrival_date):
+    """Adds a flight documents to a flights collection."""
+
+    flight = {
+        "destination": destination,
+        "price": price,
+        "departure_date": departure_date,
+        "arrival_date": arrival_date,
+        "added_at": datetime.now(),  # for TTL
+    }
+
+    flights_collection = get_collection()
+    flights_collection.insert_one(flight)
+
+

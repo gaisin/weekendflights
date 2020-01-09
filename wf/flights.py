@@ -110,3 +110,67 @@ def filter_flights(flights_data, date_pairs, max_price,
 
     LOG.debug(f"\t{len(filtered_flights)} left after filtering")
     return filtered_flights
+
+
+def format_flights(flights):
+    """Formats flights dict: adds link, weekday names, gets rid of redundant information.
+    Converts fields from
+        value, trip_class, show_to_affiliates
+        return_date, origin, number_of_changes
+        gate, found_at, duration, distance
+        destination, depart_date, actual
+    to fields
+        origin, destination,
+        departure_date, departure_weekday,
+        arrival_date, arrival_weekday,
+        price, link, found_at
+
+    NOTE:
+        price is rounded by nudreds, e.g. 4251 -> 4200, 4248 -> 4200
+        found_at converted to timestamp
+    """
+    formatted_flights = []
+
+    for flight in flights:
+        try:
+            origin = CITY_CODE_TO_NAME[flight['origin']][1]
+        except KeyError:
+            origin = flight['origin']
+
+        try:
+            destination = CITY_CODE_TO_NAME[flight['destination']][1]
+        except KeyError:
+            destination = flight['destination']
+
+        departure_weekday = wf.utils.get_weekday(flight['depart_date'])
+        arrival_weekday = wf.utils.get_weekday(flight['return_date'])
+
+        # round price to least hundred
+        rounded_price = flight['value'] - flight['value'] % 100
+
+        link = wf.utils.create_aviasales_link(
+            flight['origin'], flight['depart_date'],
+            flight['destination'], flight['return_date'],
+        )
+
+        try:
+            found_at_datetime = datetime.strptime(flight["found_at"], '%Y-%m-%dT%H:%M:%S')
+        except ValueError:
+            found_at_datetime = datetime.strptime(flight["found_at"], '%Y-%m-%dT%H:%M:%S.%f')
+
+        flight_dict = {
+            'origin': origin,
+            'destination': destination,
+            'departure_date': flight['depart_date'],
+            'departure_weekday': departure_weekday,
+            'arrival_date': flight['return_date'],
+            'arrival_weekday': arrival_weekday,
+            'price': rounded_price,
+            'link': link,
+            'found_at': found_at_datetime,
+        }
+        formatted_flights.append(flight_dict)
+
+    return formatted_flights
+
+

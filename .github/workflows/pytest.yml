@@ -29,4 +29,7 @@ jobs:
         OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         VK_TOKEN: ${{ secrets.VK_TOKEN }}
         VK_OWNER_ID_GROUP: ${{ secrets.VK_OWNER_ID_GROUP }}
+        DB_LOGIN: ${{ secrets.DB_LOGIN }}
+        DB_PASS: ${{ secrets.DB_PASS }}
+        DB_ADDRESS: ${{ secrets.DB_ADDRESS }}
       run: pytest -vvvv --cov=./wf

@@ -174,3 +174,10 @@ def format_flights(flights):
     return formatted_flights
 
 
+def get_collection():
+    """Returns flights collection."""
+
+    db = wf.db.Database("wf")
+    return db.flights
+
+

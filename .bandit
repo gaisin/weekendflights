@@ -1,0 +1,6 @@
+# more info: https://github.com/PyCQA/bandit#per-project-command-line-args
+
+[bandit]
+targets: /wf
+exclude: /.venv,/.git,/__pycache__,/weekendflights.egg-info,/.vscode,/logs
+skips: B101

@@ -58,5 +58,5 @@
     ```
 - bandit - uses .bandit configuration file
     ```
-    bandir -r .
+    bandit -r .
     ```

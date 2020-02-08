@@ -10,7 +10,7 @@ import logging
 import logging.handlers
 
 from datetime import date, timedelta, datetime
-from calendar import nextmonth, month_name
+from calendar import month_name
 
 
 LOG = logging.getLogger(__name__)
@@ -209,3 +209,12 @@ def get_weekday(date_string):
     date_in_datetime = datetime(*date_elems)
     weekday_num = date_in_datetime.weekday()
     return WEEKDAYS[weekday_num]
+
+
+def nextmonth(year, month):
+    """Returns next pair of year and month."""
+
+    if month == 12:
+        return year+1, 1
+    else:
+        return year, month+1

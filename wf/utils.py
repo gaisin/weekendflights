@@ -36,7 +36,7 @@ def set_logger():
     # create rotating file handler
     max_log_size_in_megabytes = 2
     fh = logging.handlers.RotatingFileHandler(
-        'logs/wf.log',
+        '/var/log/wf.log',
         maxBytes=max_log_size_in_megabytes*1024*1024,
         backupCount=5
     )

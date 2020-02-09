@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 """Main script, that works in CRON.
 Describes basic logic of cheap weekend flights search.

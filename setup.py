@@ -15,7 +15,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "console_scripts": [
-            "wf_find_flights = wf.find_flights:main",
+            "start-wf-parser = wf.app:run_parser_loop",
         ],
     },
 )

@@ -67,13 +67,13 @@ def send_failure_email(traceback_info):
     smtp_server.quit()
 
 
-def post_bulk_message_to_vk(flights, search_name):
-    """Posts one message about all given flights."""
+def create_bulk_message(flights, search_name):
+    """Creates one message about all given fligths."""
 
     if not flights:
         return
 
-    LOG.info(f'Posting one message to VK about {len(flights)} flights of {search_name} search...')
+    LOG.debug(f'Creating bulk message about {len(flights)} flights of {search_name} search...')
 
     flight_messages = []
 
@@ -95,8 +95,21 @@ def post_bulk_message_to_vk(flights, search_name):
 
         flight_messages.append(flight_message)
 
-    message_to_post = f'Flights found for "{search_name}" search:\n\n' +\
-                      f'\n\n'.join(flight_messages)
+    bulk_message = f'Flights found for "{search_name}" search:\n\n' +\
+                   '\n\n'.join(flight_messages)
+
+    return bulk_message
+
+
+def post_bulk_to_vk(flights, search_name):
+    """Posts one message to vk about all given flights."""
+
+    if not flights:
+        return
+
+    LOG.info(f'Posting bulk message to VK about {len(flights)} flights of {search_name} search...')
+
+    bulk_message = create_bulk_message(flights, search_name)
 
     requests.post(
         'https://api.vk.com/method/wall.post',
@@ -104,7 +117,7 @@ def post_bulk_message_to_vk(flights, search_name):
             'access_token': VK_TOKEN,
             'owner_id': VK_OWNER_ID_GROUP,
             'from_group': 1,
-            'message': message_to_post,
+            'message': bulk_message,
             'signed': 0,
             'v': "5.52",
         })

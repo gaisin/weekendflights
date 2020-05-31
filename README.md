@@ -1,26 +1,31 @@
 # Weekend flights
 
 ## Installing and running
-1. Create a virtual environment and activate it
-2. Install requirements
-3. Install the module with  
+1. Install git, docker and docker-compose
+2. Clone repo
+    ```sh
+    git clone https://github.com/gaisin/weekendflights.git
     ```
-    pip install -e .
+3. Add `private.env` file with environment variables to project's root folder
+4. Run containers with docker-compose
+    ```sh
+    docker-compose up -d
     ```
-4. Source the private env variables
-    ```
-    source private.sh
-    ```
+You are brilliant!
 
-## Updating (TODO)
-- master branch is untouchable without pull request
-- before I can merge pull request to master, all tests should be passed
-- after I update master, I can pull changes to the prod
-
-## Developer's rules
-- every function has to have a docstring
--  every function has to have at least one test
-- all the descriprions must be in English, exception is only for text labels
+## Debugging
+- To test changes inside of container use next command to force docker rebuild image
+    ```sh
+    docker-compose up --build --force-recreate -d
+    ```
+- To enter docker container use
+    ```sh
+    docker exec -it <container-id> bash
+    ```
+- To see logs use
+    ```sh
+    docker logs <container-id> -f
+    ```
 
 ## Logging rules
 - there are 3 levels of logs in the project: DEBUG, INFO, ERROR

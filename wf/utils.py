@@ -8,6 +8,7 @@ TODO:
 
 import logging
 import logging.handlers
+import sys
 
 from datetime import date, timedelta, datetime
 from calendar import month_name
@@ -40,20 +41,18 @@ def set_logger():
         maxBytes=max_log_size_in_megabytes*1024*1024,
         backupCount=5
     )
-    fh.setLevel(logging.DEBUG)
 
-    # create console handler with a higher log level
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.ERROR)
+    # create stream handler
+    sh = logging.StreamHandler(stream=sys.stdout)
 
     # create formatter and add it to the handlers
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)
-    ch.setFormatter(formatter)
+    sh.setFormatter(formatter)
 
     # add the handlers to the logger
     logger.addHandler(fh)
-    logger.addHandler(ch)
+    logger.addHandler(sh)
 
     return logger
 

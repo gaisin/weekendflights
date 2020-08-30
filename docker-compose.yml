@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    container_name: weekendflightsparser
+    command: start-wf-parser
+    env_file:
+     - private.env

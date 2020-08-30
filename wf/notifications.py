@@ -42,13 +42,15 @@ def send_found_len_by_ifttt(found_flights_number, search_name):
     requests.post(ifttt_event_url, json=data_to_send)
 
 
-def post_to_channel(flights, search_name):
-    """Posts found flight to telegram channel.
-    TODO: finish the function
-    """
+def post_bulk_to_channel(flights, search_name):
+    """Posts one message to telegram channel about all given flights."""
+
+    if not flights:
+        return
 
     bot = telegram.Bot(token=WF_BOT_TOKEN)
-    bot.send_message(chat_id='@weekendflights', text='some text to post')
+    bulk_message = create_bulk_message(flights, search_name)
+    bot.send_message(chat_id='@weekendflights', text=bulk_message)
 
 
 def send_failure_email(traceback_info):

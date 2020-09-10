@@ -10,6 +10,8 @@ import telegram
 
 from email.message import EmailMessage
 
+import wf.utils
+
 IFTTT_KEY = os.environ['IFTTT_KEY']
 WF_BOT_TOKEN = os.environ['WF_BOT_TOKEN']
 
@@ -50,7 +52,7 @@ def post_bulk_to_channel(flights, search_name):
 
     bot = telegram.Bot(token=WF_BOT_TOKEN)
     bulk_message = create_bulk_message(flights, search_name)
-    bot.send_message(chat_id='@weekendflights', text=bulk_message)
+    bot.send_message(chat_id='@weekendflights', text=bulk_message, disable_web_page_preview=True)
 
 
 def send_failure_email(traceback_info):
@@ -82,22 +84,20 @@ def create_bulk_message(flights, search_name):
     for flight in flights:
         destination = flight['destination']
         price = flight['price']
-        departure_date = flight['departure_date']
-        departure_weekday = flight['departure_weekday']
-        arrival_date = flight['arrival_date']
-        arrival_weekday = flight['arrival_weekday']
+        departure_date = wf.utils.get_readable_date(flight['departure_date'])
+        departure_weekday = wf.utils.translate_weekday(flight['departure_weekday'])
+        arrival_date = wf.utils.get_readable_date(flight['arrival_date'])
+        arrival_weekday = wf.utils.translate_weekday(flight['arrival_weekday'])
         link = flight['link']
-        found_at = flight['found_at'].strftime('%-H:%M, %d %b %Y')
 
-        flight_message = f'Moscow - {destination} '\
-                         f'for {price} rubles, '\
-                         f'{departure_date} ({departure_weekday}) — '\
-                         f'{arrival_date} ({arrival_weekday}): {link}.\n'\
-                         f'found on {found_at}'
+        flight_message = f'Москва — {destination} '\
+                         f'за {price}₽, '\
+                         f'{departure_date}, {departure_weekday} — '\
+                         f'{arrival_date}, {arrival_weekday}: {link}.\n'\
 
         flight_messages.append(flight_message)
 
-    bulk_message = f'Flights found for "{search_name}" search:\n\n' +\
+    bulk_message = f'Найдены билеты "{search_name}":\n\n' +\
                    '\n\n'.join(flight_messages)
 
     return bulk_message

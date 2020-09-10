@@ -20,10 +20,35 @@ WEEKDAYS = {
     0: "Monday",
     1: "Tuesday",
     2: "Wednesday",
-    3: "Thirsday",
+    3: "Thursday",
     4: "Friday",
     5: "Saturday",
-    6: "Sunday"
+    6: "Sunday",
+}
+
+WEEKDAYS_RU = {
+    "Monday": "понедельник",
+    "Tuesday": "вторник",
+    "Wednesday": "среда",
+    "Thursday": "четверг",
+    "Friday": "пятница",
+    "Saturday": "суббота",
+    "Sunday": "воскресенье",
+}
+
+MONTHS = {
+    1: 'января',
+    2: 'февраля',
+    3: 'марта',
+    4: 'апреля',
+    5: 'мая',
+    6: 'июня',
+    7: 'июля',
+    8: 'августа',
+    9: 'сентября',
+    10: 'октября',
+    11: 'ноября',
+    12: 'декабря',
 }
 
 
@@ -217,3 +242,17 @@ def nextmonth(year, month):
         return year+1, 1
     else:
         return year, month+1
+
+
+def get_readable_date(date):
+    """Changes date format from '2020-02-02' to readable '2 февраля'."""
+
+    _, month, day = date.split('-')
+
+    return ' '.join([day, MONTHS[int(month)]])
+
+
+def translate_weekday(weekday):
+    """Returns name of weekday translated to Russian ."""
+
+    return WEEKDAYS_RU[weekday]

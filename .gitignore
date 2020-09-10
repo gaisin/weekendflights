@@ -24,6 +24,7 @@ logs
 
 # Private environmental variables for the script
 private.env
+private.sh
 
 # Private file about server deployment
 deployment.txt

@@ -50,7 +50,7 @@ def post_bulk_to_channel(flights, search_name):
 
     bot = telegram.Bot(token=WF_BOT_TOKEN)
     bulk_message = create_bulk_message(flights, search_name)
-    bot.send_message(chat_id='@weekendflights', text=bulk_message)
+    bot.send_message(chat_id='@weekendflights', text=bulk_message, disable_web_page_preview=True)
 
 
 def send_failure_email(traceback_info):

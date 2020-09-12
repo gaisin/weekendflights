@@ -56,7 +56,6 @@ def find_flights():
             formatted_flights = wf.flights.format_flights(filtered_flights)
             unique_flights = wf.flights.get_unique_flights(formatted_flights)
 
-            wf.notifications.send_found_len_by_ifttt(len(unique_flights), search_name)
             wf.notifications.post_bulk_to_channel(unique_flights, search_name)
 
     except Exception as e:

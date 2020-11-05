@@ -174,15 +174,26 @@ def get_date_pairs(departure_date=None, arrival_date=None,
         Func returns all existing pairs of dates from departure date until arrival dates
         in tuples with minimum seven days of trip, and maximum 14 days of trip
     """
-    if next_x_months is None:
-        departure_date = date(*[int(elem) for elem in departure_date.split('-')])
-        arrival_date = date(*[int(elem) for elem in arrival_date.split('-')])
-    else:
+    if ((next_x_months is not None and (departure_date is not None or arrival_date is not None)) or
+            (next_x_months is None and (departure_date is None or arrival_date is None))):
+        raise ValueError("Either next_x_months or both departure_date and arrival_date "
+                         "has to be specified, but not all of them.")
+
+    if next_x_months is not None:
         departure_date = date.today()
         arrival_month = (departure_date.year, departure_date.month)
         for i in range(next_x_months):
             arrival_month = nextmonth(*arrival_month)
         arrival_date = date(*arrival_month, 1)
+    else:
+        departure_date = date(*[int(elem) for elem in departure_date.split('-')])
+        arrival_date = date(*[int(elem) for elem in arrival_date.split('-')])
+        if arrival_date < date.today():
+            raise ValueError("Given dates already passed")
+        if departure_date < date.today():
+            departure_date = date.today()
+        if arrival_date <= departure_date:
+            raise ValueError("Departure date must be sooner than arrival date.")
 
     result = []
 

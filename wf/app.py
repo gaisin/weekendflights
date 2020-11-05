@@ -25,6 +25,9 @@ def find_flights():
         searches = wf.searches.get_all()
 
         for search in searches:
+            if not search.get("is_active"):
+                continue
+
             search_name = search["name"]
             destinations = search["destinations"]
             max_price = search["max_price"]
@@ -36,15 +39,14 @@ def find_flights():
                 date_pairs = wf.utils.get_date_pairs(on_weekends=True, next_x_months=next_x_months)
 
             elif trip_type == "vacation":
-                continue  # temporary, since get_date_pairs() not ready yet
                 departure_date = search["departure_date"]
                 arrival_date = search["arrival_date"]
                 months = wf.utils.get_months_from_dates(departure_date, arrival_date)
                 date_pairs = wf.utils.get_date_pairs(
                     departure_date=departure_date,
                     arrival_date=arrival_date,
-                    trip_min_length=search["trip_min_length"],
-                    trip_max_length=search["trip_max_length"],
+                    trip_min_length=int(search["trip_min_length"]),
+                    trip_max_length=int(search["trip_max_length"]),
                 )
 
             latest_flights = wf.flights.get_latest(destinations, months)

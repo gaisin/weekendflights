@@ -118,13 +118,26 @@ def get_months_from_dates(departure_date, arrival_date):
 
     date_to_write = date(*(int(i) for i in departure_date.split('-'))).replace(day=1)
 
+    if arrival_month_num < departure_month_num:
+        january = 1
+        december = 12
+        new_date_to_write = _fill_months(months, date_to_write, departure_month_num, december)
+        _fill_months(months, new_date_to_write, january, arrival_month_num)
+    else:
+        _fill_months(months, date_to_write, departure_month_num, arrival_month_num)
+
+    return months
+
+
+def _fill_months(months, date_to_write, departure_month_num, arrival_month_num):
+
     for month_num in range(departure_month_num, arrival_month_num+1):
         name = month_name[month_num]
         months[name] = str(date_to_write)
         next_year, next_month = nextmonth(date_to_write.year, date_to_write.month)
         date_to_write = date_to_write.replace(year=next_year, month=next_month)
 
-    return months
+    return date_to_write
 
 
 def get_next_wednesday(from_date=None):
@@ -168,7 +181,6 @@ def get_date_pairs(departure_date=None, arrival_date=None,
             (2019-12-6, 2019-12-10),
             (2019-12-7, 2019-12-10),
             ...
-    TODO:
     2) on_weekends=False, departure_date='2020-04-01', arrival_date='2020-05-06',
        trip_min_length=7, trip_max_length=14
         Func returns all existing pairs of dates from departure date until arrival dates
@@ -199,9 +211,9 @@ def get_date_pairs(departure_date=None, arrival_date=None,
 
     one_day = timedelta(days=1)
     while departure_date <= arrival_date:
-        week_day = WEEKDAYS[departure_date.weekday()]
-
         if on_weekends:
+            week_day = WEEKDAYS[departure_date.weekday()]
+
             if week_day == "Wednesday":
                 departure_date += one_day
                 continue
@@ -211,6 +223,13 @@ def get_date_pairs(departure_date=None, arrival_date=None,
                 date_pair = (str(departure_date), str(departure_date + diff))
                 result.append(date_pair)
                 diff += timedelta(days=1)
+
+        else:
+            for trip_length in range(trip_min_length-1, trip_max_length+1):
+                trip_length = timedelta(days=trip_length)
+                if departure_date + trip_length <= arrival_date:
+                    date_pair = (str(departure_date), str(departure_date + trip_length))
+                    result.append(date_pair)
 
         departure_date += one_day
 

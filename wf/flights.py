@@ -181,16 +181,14 @@ def get_collection():
     return db.flights
 
 
-def add(destination, price, departure_date, arrival_date):
+def add(search_id, flight):
     """Adds a flight documents to a flights collection."""
 
-    flight = {
-        "destination": destination,
-        "price": price,
-        "departure_date": departure_date,
-        "arrival_date": arrival_date,
+    flight.update({
+        "search_id": search_id,
         "added_at": datetime.now(),  # for TTL
-    }
+        "is_new": True,
+    })
 
     flights_collection = get_collection()
     flights_collection.insert_one(flight)
@@ -206,22 +204,17 @@ def get_all(filter_query=None):
     return list(flights_collection.find(filter_query))
 
 
-def get_unique_flights(flights_data):
-    """Return only those flights, that are not in the flights database yet."""
+def save_unique_flights(search_id, flights_data):
+    """Saves to DB flights, that are not in the flights database yet."""
 
-    LOG.info("Getting unique flights...")
+    LOG.info("Saving unique flights...")
     LOG.info(f"\tGot {len(flights_data)} flights")
 
     unique_flights = []
 
     for flight in flights_data:
         try:
-            add(
-                flight["destination"],
-                flight["price"],
-                flight["departure_date"],
-                flight["arrival_date"],
-            )
+            add(search_id, flight)
         except DuplicateKeyError:
             pass
         else:
@@ -229,3 +222,25 @@ def get_unique_flights(flights_data):
 
     LOG.info(f"\t{len(unique_flights)} of them are unique")
     return unique_flights
+
+
+def get_new_flights(search_id):
+    """Returns list of new flights and mark those flights as not new."""
+
+    LOG.info("Getting new flights for '{}' search...".format(search_id))
+
+    new_flights = []
+
+    flights_collection = get_collection()
+    new_flight = True
+    while new_flight:
+        new_flight = flights_collection.find_one_and_update(
+            {"search_id": search_id, "is_new": True},
+            {"$set": {"is_new": False}})
+        LOG.info("new flight: {}".format(new_flight))
+        if new_flight:
+            new_flights.append(new_flight)
+
+    LOG.info("Got {} new (unposted) flights".format(len(new_flights)))
+
+    return new_flights

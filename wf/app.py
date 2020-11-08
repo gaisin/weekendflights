@@ -28,7 +28,6 @@ def find_flights():
             if not search.get("is_active"):
                 continue
 
-            search_name = search["name"]
             destinations = search["destinations"]
             max_price = search["max_price"]
             trip_type = search["trip_type"]
@@ -56,12 +55,22 @@ def find_flights():
                 max_price
             )
             formatted_flights = wf.flights.format_flights(filtered_flights)
-            unique_flights = wf.flights.get_unique_flights(formatted_flights)
-
-            wf.notifications.post_bulk_to_channel(unique_flights, search_name)
+            wf.flights.save_unique_flights(search["_id"], formatted_flights)
 
     except Exception as e:
         LOG.exception(f"While flights searching exception happened: {e}")
+
+
+def post_new_flights():
+    """Posts new flights."""
+
+    searches = wf.searches.get_all()
+
+    for search in searches:
+        if not search.get("is_active"):
+            continue
+        new_flights = wf.flights.get_new_flights(search["_id"])
+        wf.notifications.post_bulk_to_channel(new_flights, search["name"])
 
 
 def run_threaded(job_func):
@@ -75,6 +84,9 @@ def run_parser_loop():
     """
 
     schedule.every().hour.do(run_threaded, find_flights)
+    schedule.every().day.at("08:00").do(run_threaded, post_new_flights)
+    schedule.every().day.at("16:00").do(run_threaded, post_new_flights)
+    schedule.every().day.at("21:30").do(run_threaded, post_new_flights)
 
     LOG.info('Starting cheap flights search...')
 

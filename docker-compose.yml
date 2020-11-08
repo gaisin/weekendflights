@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.3'
 
 services:
   app:
@@ -7,3 +7,5 @@ services:
     command: start-wf-parser
     env_file:
      - private.env
+    volumes:
+     - /etc/localtime:/etc/localtime:ro
